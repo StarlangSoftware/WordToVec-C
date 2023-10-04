@@ -117,7 +117,7 @@ void create_uni_gram_table(Vocabulary_ptr vocabulary) {
 }
 
 /**
- * Constructs Huffman Tree based on the number of occurences of the words.
+ * Constructs Huffman Tree based on the number of occurrences of the words.
  */
 void construct_huffman_tree(Vocabulary_ptr vocabulary) {
     int min1i, min2i, b, i, size = vocabulary->vocabulary->size;

@@ -147,6 +147,7 @@ void train_cbow(Neural_network_ptr neural_network) {
     corpus_open(neural_network->corpus);
     Sentence_ptr currentSentence = corpus_get_sentence2(neural_network->corpus);
     Vocabulary_word_ptr currentWord;
+    srandom(neural_network->parameter->seed);
     double* outputs = malloc(neural_network->vector_length * sizeof(double));
     double* outputUpdate = malloc(neural_network->vector_length * sizeof(double));
     while (iteration->iteration_count < neural_network->parameter->number_of_iterations) {
@@ -235,6 +236,7 @@ void train_skip_gram(Neural_network_ptr neural_network) {
     corpus_open(neural_network->corpus);
     Sentence_ptr currentSentence = corpus_get_sentence2(neural_network->corpus);
     Vocabulary_word_ptr currentWord;
+    srandom(neural_network->parameter->seed);
     double* outputUpdate = malloc(neural_network->vector_length * sizeof(double));
     while (iteration->iteration_count < neural_network->parameter->number_of_iterations) {
         alpha_update(iteration, neural_network->vocabulary->total_number_of_words);

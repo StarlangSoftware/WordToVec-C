@@ -1,0 +1,25 @@
+//
+// Created by Olcay Taner YILDIZ on 1.10.2023.
+//
+
+#include <stdlib.h>
+#include "WordToVecParameter.h"
+
+/**
+ * Empty constructor for Word2Vec parameter
+ */
+Word_to_vec_parameter_ptr create_word_to_vec_parameter() {
+    Word_to_vec_parameter_ptr result = malloc(sizeof(Word_to_vec_parameter));
+    result->layer_size = 100;
+    result->alpha = 0.025;
+    result->window = 5;
+    result->hierarchical_soft_max = false;
+    result->negative_sampling_size = 5;
+    result->number_of_iterations = 2;
+    result->seed = 1;
+    return result;
+}
+
+void free_word_to_vec_parameter(Word_to_vec_parameter_ptr word_to_vec_parameter) {
+    free(word_to_vec_parameter);
+}

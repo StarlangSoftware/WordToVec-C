@@ -24,33 +24,21 @@ Neural_network_ptr create_neural_network(Corpus_ptr corpus, Word_to_vec_paramete
     result->corpus = corpus;
     result->exp_table = create_array_list();
     row = size_of_vocabulary(result->vocabulary);
-    result->word_vectors = malloc(row * sizeof(double*));
-    for (int i = 0; i < row; i++){
-        result->word_vectors[i] = malloc(result->vector_length * sizeof(double));
-    }
+    result->word_vectors = allocate_2d(row, result->vector_length);
     for (int i = 0; i < row; i++) {
         for (int j = 0; j < result->vector_length; j++) {
             result->word_vectors[i][j] = -0.5 + ((double)random()) / RAND_MAX;
         }
     }
-    result->word_vector_update = malloc(row * sizeof(double*));
-    for (int i = 0; i < row; i++){
-        result->word_vector_update[i] = malloc(result->vector_length * sizeof(double));
-    }
+    result->word_vector_update = allocate_2d(row, result->vector_length);
     prepare_exp_table(result);
     return result;
 }
 
 void free_neural_network(Neural_network_ptr neural_network) {
     int row = size_of_vocabulary(neural_network->vocabulary);
-    for (int i = 0; i < row; i++){
-        free(neural_network->word_vector_update[i]);
-    }
-    free(neural_network->word_vector_update);
-    for (int i = 0; i < row; i++){
-        free(neural_network->word_vectors[i]);
-    }
-    free(neural_network->word_vectors);
+    free_2d(neural_network->word_vector_update, row);
+    free_2d(neural_network->word_vectors, row);
     free_vocabulary(neural_network->vocabulary);
     free_array_list(neural_network->exp_table, free);
     free(neural_network);

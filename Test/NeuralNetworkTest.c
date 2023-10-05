@@ -127,7 +127,7 @@ void test_with_word_vectors(){
 }
 
 int main(){
-    //test_with_word_vectors();
+    test_with_word_vectors();
     test_train_english_cbow();
-    //test_train_english_skip_gram();
+    test_train_english_skip_gram();
 }

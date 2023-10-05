@@ -26,7 +26,7 @@ Neural_network_ptr create_neural_network(Corpus_ptr corpus, Word_to_vec_paramete
     row = size_of_vocabulary(result->vocabulary);
     result->word_vectors = malloc(row * sizeof(double*));
     for (int i = 0; i < row; i++){
-        result->word_vectors[i] = malloc(sizeof(double));
+        result->word_vectors[i] = malloc(result->vector_length * sizeof(double));
     }
     for (int i = 0; i < row; i++) {
         for (int j = 0; j < result->vector_length; j++) {
@@ -35,7 +35,7 @@ Neural_network_ptr create_neural_network(Corpus_ptr corpus, Word_to_vec_paramete
     }
     result->word_vector_update = malloc(row * sizeof(double*));
     for (int i = 0; i < row; i++){
-        result->word_vector_update[i] = malloc(sizeof(double));
+        result->word_vector_update[i] = malloc(result->vector_length * sizeof(double));
     }
     prepare_exp_table(result);
     return result;

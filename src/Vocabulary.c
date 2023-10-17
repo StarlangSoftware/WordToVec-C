@@ -121,11 +121,11 @@ void create_uni_gram_table(Vocabulary_ptr vocabulary) {
  */
 void construct_huffman_tree(Vocabulary_ptr vocabulary) {
     int min1i, min2i, b, i, size = vocabulary->vocabulary->size;
-    int* count = malloc((size * 2 + 1) * sizeof(int));
-    int* code = malloc(MAX_CODE_LENGTH * sizeof(int));
-    int* point = malloc(MAX_CODE_LENGTH * sizeof(int));
-    int* binary = malloc((size * 2 + 1) * sizeof(int));
-    int* parentNode = malloc((size * 2 + 1) * sizeof(int));
+    int count[size * 2 + 1];
+    int code[MAX_CODE_LENGTH];
+    int point[MAX_CODE_LENGTH];
+    int binary[size * 2 + 1];
+    int parentNode[size * 2 + 1];
     Vocabulary_word_ptr word;
     for (int a = 0; a < size; a++){
         word = array_list_get(vocabulary->vocabulary, a);
@@ -184,11 +184,6 @@ void construct_huffman_tree(Vocabulary_ptr vocabulary) {
             word->point[i - b] = point[b] - size;
         }
     }
-    free(count);
-    free(code);
-    free(point);
-    free(binary);
-    free(parentNode);
 }
 
 void free_vocabulary(Vocabulary_ptr vocabulary) {

@@ -11,19 +11,15 @@
 #include "WordPair.h"
 
 Semantic_data_set_ptr create_semantic_data_set(char *file_name) {
-    FILE* input_file;
-    char line[MAX_LINE_LENGTH];
     Semantic_data_set_ptr result = create_semantic_data_set2();
-    input_file = fopen(file_name, "r");
-    char* input = fgets(line, MAX_LINE_LENGTH, input_file);
-    while (input != NULL){
-        line[strcspn(line, "\n")] = 0;
+    Array_list_ptr lines = read_lines(file_name);
+    for (int i = 0; i < lines->size; i++){
+        char* line = array_list_get(lines, i);
         Array_list_ptr items = str_split(line, ' ');
         array_list_add(result->pairs, create_word_pair(array_list_get(items, 0), array_list_get(items, 1), atof(array_list_get(items, 2))));
         free_array_list(items, free);
-        input = fgets(line, MAX_LINE_LENGTH, input_file);
     }
-    fclose(input_file);
+    free_array_list(lines, free);
     return result;
 }
 

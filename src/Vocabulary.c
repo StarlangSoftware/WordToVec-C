@@ -21,7 +21,7 @@ Vocabulary_ptr create_vocabulary(Corpus_ptr corpus) {
     Sentence_ptr sentence = corpus_get_sentence2(corpus);
     while (sentence != NULL){
         for (int i = 0; i < sentence_word_count(sentence); i++){
-            put_counter_hash_map(counts, sentence_get_word(sentence, i)->name);
+            put_counter_hash_map(counts, sentence_get_word(sentence, i));
         }
         result->total_number_of_words += sentence_word_count(sentence);
         sentence = corpus_get_sentence2(corpus);

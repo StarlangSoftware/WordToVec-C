@@ -2,7 +2,6 @@
 // Created by Olcay Taner YILDIZ on 2.10.2023.
 //
 
-#include <stdlib.h>
 #include <math.h>
 #include <Memory/Memory.h>
 #include "Vocabulary.h"

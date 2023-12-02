@@ -3,10 +3,8 @@
 //
 
 #include <stdlib.h>
-#include <stdio.h>
 #include <FileUtils.h>
 #include <StringUtils.h>
-#include <string.h>
 #include <Memory/Memory.h>
 #include "SemanticDataSet.h"
 #include "WordPair.h"

@@ -8,7 +8,7 @@
 #include "../src/NeuralNetwork.h"
 
 void test_train_english_cbow(){
-    Semantic_data_set_ptr mc, rg, ws, av, men, mturk, rare;
+    Semantic_data_set_ptr mc, rg, ws, men, mturk, rare;
     mc = create_semantic_data_set("MC.txt");
     rg = create_semantic_data_set("RG.txt");
     ws = create_semantic_data_set("WS353.txt");
@@ -51,7 +51,7 @@ void test_train_english_cbow(){
 }
 
 void test_train_english_skip_gram(){
-    Semantic_data_set_ptr mc, rg, ws, av, men, mturk, rare;
+    Semantic_data_set_ptr mc, rg, ws, men, mturk, rare;
     mc = create_semantic_data_set("MC.txt");
     rg = create_semantic_data_set("RG.txt");
     ws = create_semantic_data_set("WS353.txt");
@@ -94,7 +94,7 @@ void test_train_english_skip_gram(){
 }
 
 void test_with_word_vectors(){
-    Semantic_data_set_ptr mc, rg, ws, av, men, mturk, rare;
+    Semantic_data_set_ptr mc, rg, ws, men, mturk, rare;
     mc = create_semantic_data_set("MC.txt");
     rg = create_semantic_data_set("RG.txt");
     ws = create_semantic_data_set("WS353.txt");

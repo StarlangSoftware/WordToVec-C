@@ -6,6 +6,7 @@
 #include <StringUtils.h>
 #include <HashMap/HashMap.h>
 #include "VocabularyWord.h"
+#include "Memory/Memory.h"
 
 /**
  * Constructor for a VocabularyWord. The constructor gets name and count values and sets the corresponding
@@ -14,7 +15,7 @@
  * @param count Number of occurrences of this word in the corpus
  */
 Vocabulary_word_ptr create_vocabulary_word(char *name, int count) {
-    Vocabulary_word_ptr result = malloc(sizeof(Vocabulary_word));
+    Vocabulary_word_ptr result = malloc_(sizeof(Vocabulary_word), "create_vocabulary_word");
     result->name = str_copy(result->name, name);
     result->count = count;
     result->code_length = 0;
@@ -30,5 +31,6 @@ int compare_vocabulary_word2(const Vocabulary_word *word1, const Vocabulary_word
 }
 
 void free_vocabulary_word(Vocabulary_word_ptr word) {
-    free(word);
+    free_(word->name);
+    free_(word);
 }

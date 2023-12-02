@@ -4,6 +4,7 @@
 
 #include <stdlib.h>
 #include <math.h>
+#include <Memory/Memory.h>
 #include "NeuralNetwork.h"
 #include "Iteration.h"
 
@@ -15,7 +16,7 @@
  * @param parameter Parameters of the Word2Vec algorithm.
  */
 Neural_network_ptr create_neural_network(Corpus_ptr corpus, Word_to_vec_parameter_ptr parameter) {
-    Neural_network_ptr result = malloc(sizeof(Neural_network));
+    Neural_network_ptr result = malloc_(sizeof(Neural_network), "create_neural_network");
     int row;
     srandom(parameter->seed);
     result->vocabulary = create_vocabulary(corpus);
@@ -40,8 +41,8 @@ void free_neural_network(Neural_network_ptr neural_network) {
     free_2d(neural_network->word_vector_update, row);
     free_2d(neural_network->word_vectors, row);
     free_vocabulary(neural_network->vocabulary);
-    free_array_list(neural_network->exp_table, free);
-    free(neural_network);
+    free_array_list(neural_network->exp_table, free_);
+    free_(neural_network);
 }
 
 /**
@@ -128,32 +129,32 @@ double dot_product_array(Neural_network_ptr neural_network, const double *vector
  * Main method for training the CBow version of Word2Vec algorithm.
  */
 void train_cbow(Neural_network_ptr neural_network) {
-    int wordIndex, lastWordIndex;
+    int word_index, last_word_index;
     Iteration_ptr iteration = create_iteration(neural_network->corpus, neural_network->parameter);
     int target, label, l2, b, cw;
     double f, g;
     corpus_open(neural_network->corpus);
-    Sentence_ptr currentSentence = corpus_get_sentence2(neural_network->corpus);
-    Vocabulary_word_ptr currentWord;
+    Sentence_ptr current_sentence = corpus_get_sentence2(neural_network->corpus);
+    Vocabulary_word_ptr current_word;
     srandom(neural_network->parameter->seed);
-    double* outputs = malloc(neural_network->vector_length * sizeof(double));
-    double* outputUpdate = malloc(neural_network->vector_length * sizeof(double));
+    double* outputs = malloc_(neural_network->vector_length * sizeof(double), "train_cbow_1");
+    double* output_update = malloc_(neural_network->vector_length * sizeof(double), "train_cbow_2");
     while (iteration->iteration_count < neural_network->parameter->number_of_iterations) {
         alpha_update(iteration, neural_network->vocabulary->total_number_of_words);
-        wordIndex = get_position(neural_network->vocabulary, array_list_get(currentSentence->words, iteration->sentence_position));
-        currentWord = vocabulary_get_word(neural_network->vocabulary, wordIndex);
+        word_index = get_position(neural_network->vocabulary, array_list_get(current_sentence->words, iteration->sentence_position));
+        current_word = vocabulary_get_word(neural_network->vocabulary, word_index);
         for (int i = 0; i < neural_network->vector_length; i++){
             outputs[i] = 0;
-            outputUpdate[i] = 0;
+            output_update[i] = 0;
         }
         b = random() % neural_network->parameter->window;
         cw = 0;
         for (int a = b; a < neural_network->parameter->window * 2 + 1 - b; a++){
             int c = iteration->sentence_position - neural_network->parameter->window + a;
-            if (a != neural_network->parameter->window && sentence_safe_index(currentSentence, c)) {
-                lastWordIndex = get_position(neural_network->vocabulary, array_list_get(currentSentence->words, c));
+            if (a != neural_network->parameter->window && sentence_safe_index(current_sentence, c)) {
+                last_word_index = get_position(neural_network->vocabulary, array_list_get(current_sentence->words, c));
                 for (int j = 0; j < neural_network->vector_length; j++){
-                    outputs[j] += neural_network->word_vectors[lastWordIndex][j];
+                    outputs[j] += neural_network->word_vectors[last_word_index][j];
                 }
                 cw++;
             }
@@ -163,8 +164,8 @@ void train_cbow(Neural_network_ptr neural_network) {
                 outputs[j] /= cw;
             }
             if (neural_network->parameter->hierarchical_soft_max){
-                for (int d = 0; d < currentWord->code_length; d++) {
-                    l2 = currentWord->point[d];
+                for (int d = 0; d < current_word->code_length; d++) {
+                    l2 = current_word->point[d];
                     f = dot_product_array(neural_network, outputs, neural_network->word_vector_update[l2]);
                     if (f <= -MAX_EXP || f >= MAX_EXP){
                         continue;
@@ -176,75 +177,78 @@ void train_cbow(Neural_network_ptr neural_network) {
                             continue;
                         }
                     }
-                    g = (1 - currentWord->code[d] - f) * iteration->alpha;
-                    update_output(neural_network, outputUpdate, outputs, l2, g);
+                    g = (1 - current_word->code[d] - f) * iteration->alpha;
+                    update_output(neural_network, output_update, outputs, l2, g);
                 }
             } else {
                 for (int d = 0; d < neural_network->parameter->negative_sampling_size + 1; d++) {
                     if (d == 0) {
-                        target = wordIndex;
+                        target = word_index;
                         label = 1;
                     } else {
                         target = get_table_value(neural_network->vocabulary, random() % neural_network->vocabulary->table->size);
                         if (target == 0)
                             target = random() % (size_of_vocabulary(neural_network->vocabulary) - 1) + 1;
-                        if (target == wordIndex)
+                        if (target == word_index)
                             continue;
                         label = 0;
                     }
                     l2 = target;
                     f = dot_product_array(neural_network, outputs, neural_network->word_vector_update[l2]);
                     g = calculate_g(neural_network, f, iteration->alpha, label);
-                    update_output(neural_network, outputUpdate, outputs, l2, g);
+                    update_output(neural_network, output_update, outputs, l2, g);
                 }
             }
             for (int a = b; a < neural_network->parameter->window * 2 + 1 - b; a++){
                 int c = iteration->sentence_position - neural_network->parameter->window + a;
-                if (a != neural_network->parameter->window && sentence_safe_index(currentSentence, c)) {
-                    lastWordIndex = get_position(neural_network->vocabulary, array_list_get(currentSentence->words, c));
+                if (a != neural_network->parameter->window && sentence_safe_index(current_sentence, c)) {
+                    last_word_index = get_position(neural_network->vocabulary, array_list_get(current_sentence->words, c));
                     for (int j = 0; j < neural_network->vector_length; j++){
-                        neural_network->word_vectors[lastWordIndex][j] += outputUpdate[j];
+                        neural_network->word_vectors[last_word_index][j] += output_update[j];
                     }
                 }
             }
         }
-        currentSentence = sentence_update(iteration, currentSentence);
+        current_sentence = sentence_update(iteration, current_sentence);
     }
     corpus_close(neural_network->corpus);
+    free_iteration(iteration);
+    free_(outputs);
+    free_(output_update);
 }
 
 /**
  * Main method for training the SkipGram version of Word2Vec algorithm.
  */
 void train_skip_gram(Neural_network_ptr neural_network) {
-    int wordIndex, lastWordIndex;
+    int word_index, last_word_index;
     Iteration_ptr iteration = create_iteration(neural_network->corpus, neural_network->parameter);
     int target, label, l1, l2, b;
     double f, g;
     corpus_open(neural_network->corpus);
-    Sentence_ptr currentSentence = corpus_get_sentence2(neural_network->corpus);
-    Vocabulary_word_ptr currentWord;
+    Sentence_ptr current_sentence = corpus_get_sentence2(neural_network->corpus);
+    Vocabulary_word_ptr current_word;
     srandom(neural_network->parameter->seed);
-    double* outputUpdate = malloc(neural_network->vector_length * sizeof(double));
+    double* output_update = malloc_(neural_network->vector_length * sizeof(double), "train_skip_gram");
     while (iteration->iteration_count < neural_network->parameter->number_of_iterations) {
         alpha_update(iteration, neural_network->vocabulary->total_number_of_words);
-        wordIndex = get_position(neural_network->vocabulary, array_list_get(currentSentence->words, iteration->sentence_position));
-        currentWord = vocabulary_get_word(neural_network->vocabulary, wordIndex);
+        word_index = get_position(neural_network->vocabulary, array_list_get(current_sentence->words, iteration->sentence_position));
+        current_word = vocabulary_get_word(neural_network->vocabulary, word_index);
         for (int i = 0; i < neural_network->vector_length; i++){
-            outputUpdate[i] = 0;
+            output_update[i] = 0;
         }
         b = random() % neural_network->parameter->window;
         for (int a = b; a < neural_network->parameter->window * 2 + 1 - b; a++) {
             int c = iteration->sentence_position - neural_network->parameter->window + a;
-            if (a != neural_network->parameter->window && sentence_safe_index(currentSentence, c)) {
-                lastWordIndex = get_position(neural_network->vocabulary, array_list_get(currentSentence->words, c));
-                l1 = lastWordIndex;
+            if (a != neural_network->parameter->window && sentence_safe_index(current_sentence, c)) {
+                last_word_index = get_position(neural_network->vocabulary, array_list_get(current_sentence->words, c));
+                l1 = last_word_index;
                 for (int i = 0; i < neural_network->vector_length; i++){
-                    outputUpdate[i] = 0;
+                    output_update[i] = 0;
                 }
                 if (neural_network->parameter->hierarchical_soft_max) {
-                    for (int d = 0; d < currentWord->code_length; d++) {
-                        l2 = currentWord->point[d];
+                    for (int d = 0; d < current_word->code_length; d++) {
+                        l2 = current_word->point[d];
                         f = dot_product_array(neural_network, neural_network->word_vectors[l1], neural_network->word_vector_update[l2]);
                         if (f <= -MAX_EXP || f >= MAX_EXP){
                             continue;
@@ -256,34 +260,36 @@ void train_skip_gram(Neural_network_ptr neural_network) {
                                 continue;
                             }
                         }
-                        g = (1 - currentWord->code[d] - f) * iteration->alpha;
-                        update_output(neural_network, outputUpdate, neural_network->word_vectors[l1], l2, g);
+                        g = (1 - current_word->code[d] - f) * iteration->alpha;
+                        update_output(neural_network, output_update, neural_network->word_vectors[l1], l2, g);
                     }
                 } else {
                     for (int d = 0; d < neural_network->parameter->negative_sampling_size + 1; d++) {
                         if (d == 0) {
-                            target = wordIndex;
+                            target = word_index;
                             label = 1;
                         } else {
                             target = get_table_value(neural_network->vocabulary, random() % neural_network->vocabulary->table->size);
                             if (target == 0)
                                 target = random() % (size_of_vocabulary(neural_network->vocabulary) - 1) + 1;
-                            if (target == wordIndex)
+                            if (target == word_index)
                                 continue;
                             label = 0;
                         }
                         l2 = target;
                         f = dot_product_array(neural_network, neural_network->word_vectors[l1], neural_network->word_vector_update[l2]);
                         g = calculate_g(neural_network, f, iteration->alpha, label);
-                        update_output(neural_network, outputUpdate, neural_network->word_vectors[l1], l2, g);
+                        update_output(neural_network, output_update, neural_network->word_vectors[l1], l2, g);
                     }
                 }
                 for (int j = 0; j < neural_network->vector_length; j++){
-                    neural_network->word_vectors[l1][j] += outputUpdate[j];
+                    neural_network->word_vectors[l1][j] += output_update[j];
                 }
             }
         }
-        currentSentence = sentence_update(iteration, currentSentence);
+        current_sentence = sentence_update(iteration, current_sentence);
     }
     corpus_close(neural_network->corpus);
+    free_iteration(iteration);
+    free_(output_update);
 }

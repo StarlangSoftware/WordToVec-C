@@ -3,13 +3,14 @@
 //
 
 #include <stdlib.h>
+#include <Memory/Memory.h>
 #include "WordToVecParameter.h"
 
 /**
  * Empty constructor for Word2Vec parameter
  */
 Word_to_vec_parameter_ptr create_word_to_vec_parameter() {
-    Word_to_vec_parameter_ptr result = malloc(sizeof(Word_to_vec_parameter));
+    Word_to_vec_parameter_ptr result = malloc_(sizeof(Word_to_vec_parameter), "create_word_to_vec_parameter");
     result->layer_size = 100;
     result->alpha = 0.025;
     result->window = 5;
@@ -21,5 +22,5 @@ Word_to_vec_parameter_ptr create_word_to_vec_parameter() {
 }
 
 void free_word_to_vec_parameter(Word_to_vec_parameter_ptr word_to_vec_parameter) {
-    free(word_to_vec_parameter);
+    free_(word_to_vec_parameter);
 }

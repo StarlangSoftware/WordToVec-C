@@ -7,6 +7,7 @@
 #include <FileUtils.h>
 #include <StringUtils.h>
 #include <string.h>
+#include <Memory/Memory.h>
 #include "SemanticDataSet.h"
 #include "WordPair.h"
 
@@ -17,21 +18,21 @@ Semantic_data_set_ptr create_semantic_data_set(char *file_name) {
         char* line = array_list_get(lines, i);
         Array_list_ptr items = str_split(line, ' ');
         array_list_add(result->pairs, create_word_pair(array_list_get(items, 0), array_list_get(items, 1), atof(array_list_get(items, 2))));
-        free_array_list(items, free);
+        free_array_list(items, free_);
     }
-    free_array_list(lines, free);
+    free_array_list(lines, free_);
     return result;
 }
 
 Semantic_data_set_ptr create_semantic_data_set2() {
-    Semantic_data_set_ptr result = malloc(sizeof(Semantic_data_set));
+    Semantic_data_set_ptr result = malloc_(sizeof(Semantic_data_set), "create_semantic_data_set2");
     result->pairs = create_array_list();
     return result;
 }
 
 void free_semantic_data_set(Semantic_data_set_ptr semantic_data_set) {
     free_array_list(semantic_data_set->pairs, (void (*)(void *)) free_word_pair);
-    free(semantic_data_set);
+    free_(semantic_data_set);
 }
 
 Semantic_data_set_ptr
@@ -47,7 +48,7 @@ calculate_similarities(Semantic_data_set_ptr semantic_data_set, Vectorized_dicti
             similarity = cosine_similarity(vectorized_word_1->vector, vectorized_word_2->vector);
             array_list_add(result->pairs, create_word_pair(word1, word2, similarity));
         } else {
-            array_list_remove(semantic_data_set->pairs, i, NULL);
+            array_list_remove(semantic_data_set->pairs, i, (void (*)(void *)) free_word_pair);
             i--;
         }
     }

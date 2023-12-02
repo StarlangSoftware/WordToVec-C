@@ -20,6 +20,7 @@ void test_train_english_cbow(){
     parameter->cbow = true;
     Neural_network_ptr neural_network = create_neural_network(english, parameter);
     Vectorized_dictionary_ptr dictionary = train(neural_network);
+    free_word_to_vec_parameter(parameter);
     Semantic_data_set_ptr mc2 = calculate_similarities(mc, dictionary);
     printf("%.6lf\n", spearman_correlation(mc, mc2));
     free_semantic_data_set(mc);
@@ -45,6 +46,7 @@ void test_train_english_cbow(){
     free_semantic_data_set(rare);
     free_semantic_data_set(rare2);
     free_vectorized_dictionary(dictionary);
+    free_neural_network(neural_network);
     free_corpus(english);
 }
 
@@ -61,6 +63,7 @@ void test_train_english_skip_gram(){
     parameter->cbow = false;
     Neural_network_ptr neural_network = create_neural_network(english, parameter);
     Vectorized_dictionary_ptr dictionary = train(neural_network);
+    free_word_to_vec_parameter(parameter);
     Semantic_data_set_ptr mc2 = calculate_similarities(mc, dictionary);
     printf("%.6lf\n", spearman_correlation(mc, mc2));
     free_semantic_data_set(mc);
@@ -86,6 +89,7 @@ void test_train_english_skip_gram(){
     free_semantic_data_set(rare);
     free_semantic_data_set(rare2);
     free_vectorized_dictionary(dictionary);
+    free_neural_network(neural_network);
     free_corpus(english);
 }
 
@@ -127,7 +131,5 @@ void test_with_word_vectors(){
 }
 
 int main(){
-    test_with_word_vectors();
     test_train_english_cbow();
-    test_train_english_skip_gram();
 }

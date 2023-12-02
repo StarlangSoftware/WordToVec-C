@@ -5,10 +5,11 @@
 #include <stdlib.h>
 #include <StringUtils.h>
 #include <HashMap/HashMap.h>
+#include <Memory/Memory.h>
 #include "WordPair.h"
 
 Word_pair_ptr create_word_pair(char *word1, char *word2, double related_by) {
-    Word_pair_ptr result = malloc(sizeof(Word_pair));
+    Word_pair_ptr result = malloc_(sizeof(Word_pair), "create_word_pair");
     result->word1 = str_copy(result->word1, word1);
     result->word2 = str_copy(result->word2, word2);
     result->related_by = related_by;
@@ -16,9 +17,9 @@ Word_pair_ptr create_word_pair(char *word1, char *word2, double related_by) {
 }
 
 void free_word_pair(Word_pair_ptr word_pair) {
-    free(word_pair->word1);
-    free(word_pair->word2);
-    free(word_pair);
+    free_(word_pair->word1);
+    free_(word_pair->word2);
+    free_(word_pair);
 }
 
 int compare_word_pair(const Word_pair *word_pair1, const Word_pair *word_pair2) {

@@ -3,6 +3,7 @@
 //
 
 #include <stdlib.h>
+#include <Memory/Memory.h>
 #include "Iteration.h"
 
 /**
@@ -12,7 +13,7 @@
  * @param wordToVecParameter Parameters of the Word2Vec algorithm.
  */
 Iteration_ptr create_iteration(Corpus_ptr corpus, Word_to_vec_parameter_ptr parameter) {
-    Iteration_ptr result = malloc(sizeof(Iteration));
+    Iteration_ptr result = malloc_(sizeof(Iteration), "create_iteration");
     result->word_count = 0;
     result->last_word_count = 0;
     result->word_count_actual = 0;
@@ -26,7 +27,7 @@ Iteration_ptr create_iteration(Corpus_ptr corpus, Word_to_vec_parameter_ptr para
 }
 
 void free_iteration(Iteration_ptr iteration) {
-    free(iteration);
+    free_(iteration);
 }
 
 /**

@@ -26,7 +26,7 @@ class WordToVecConan(ConanFile):
         cmake.build()
 
     def package(self):
-        self.copy("*.h", src="src", dst="include")
+        self.copy("*.h", src="src", dst="include", keep_path=False)
         self.copy("*WordToVec.lib", dst="lib", keep_path=False)
         self.copy("*.dll", dst="bin", keep_path=False)
         self.copy("*.so", dst="lib", keep_path=False)

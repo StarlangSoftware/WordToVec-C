@@ -2,7 +2,6 @@
 // Created by Olcay Taner YILDIZ on 1.10.2023.
 //
 
-#include <stdlib.h>
 #include <StringUtils.h>
 #include <HashMap/HashMap.h>
 #include "VocabularyWord.h"
@@ -30,6 +29,10 @@ int compare_vocabulary_word2(const Vocabulary_word *word1, const Vocabulary_word
     return compare_int_r(&(word1->count), &(word2->count));
 }
 
+/**
+ * Frees memory allocated for vocabulary word.
+ * @param word Vocabulary word to deallocate.
+ */
 void free_vocabulary_word(Vocabulary_word_ptr word) {
     free_(word->name);
     free_(word);

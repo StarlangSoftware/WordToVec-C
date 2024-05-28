@@ -36,6 +36,10 @@ Neural_network_ptr create_neural_network(Corpus_ptr corpus, Word_to_vec_paramete
     return result;
 }
 
+/**
+ * Frees memory allocated for the neural network. Freesword vector update, word vectors, vocabulary, exp_table.
+ * @param neural_network Neural network to deallocate.
+ */
 void free_neural_network(Neural_network_ptr neural_network) {
     int row = size_of_vocabulary(neural_network->vocabulary);
     free_2d(neural_network->word_vector_update, row);
@@ -104,6 +108,14 @@ Vectorized_dictionary_ptr train(Neural_network_ptr neural_network) {
     return result;
 }
 
+/**
+ * Calculate the update of outputs for word indexed with l2. It also calculates the word vector updates for word
+ * indexed at l2.
+ * @param outputUpdate Output update to be added.
+ * @param outputs Current outputs.
+ * @param l2 Index of the input
+ * @param g Multiplier for the update.
+ */
 void update_output(Neural_network_ptr neural_network,
                    double *outputUpdate,
                    const double *outputs,
@@ -117,6 +129,12 @@ void update_output(Neural_network_ptr neural_network,
     }
 }
 
+/**
+ * Calculates the dot product of two vectors represented as array of doubles.
+ * @param vector1 First vector to multiply.
+ * @param vector2 Second vector to multiply.
+ * @return Dot product of two given vectors.
+ */
 double dot_product_array(Neural_network_ptr neural_network, const double *vector1, const double *vector2) {
     double sum = 0;
     for (int j = 0; j < neural_network->vector_length; j++){

@@ -45,6 +45,10 @@ Vocabulary_ptr create_vocabulary(Corpus_ptr corpus) {
     return result;
 }
 
+/**
+ * Empty constructor for vocabulary. Allocates empty vocabulary, table and word map.
+ * @return An empty allocated vocabulary.
+ */
 Vocabulary_ptr create_vocabulary2() {
     Vocabulary_ptr result = malloc_(sizeof(Vocabulary), "create_vocabulary2");
     result->vocabulary = create_array_list();
@@ -188,6 +192,10 @@ void construct_huffman_tree(Vocabulary_ptr vocabulary) {
     }
 }
 
+/**
+ * Frees memory allocated for the vocabulary. Frees vocabulary and table array lists and word_map hash map.
+ * @param vocabulary Vocabulary to deallocate.
+ */
 void free_vocabulary(Vocabulary_ptr vocabulary) {
     free_array_list(vocabulary->vocabulary, (void (*)(void *)) free_vocabulary_word);
     free_array_list(vocabulary->table, free_);

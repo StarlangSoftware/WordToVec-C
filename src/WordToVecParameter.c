@@ -21,6 +21,10 @@ Word_to_vec_parameter_ptr create_word_to_vec_parameter() {
     return result;
 }
 
+/**
+ * Frees memory allocated to word to vec parameter.
+ * @param word_to_vec_parameter Word to vec parameter to deallocate.
+ */
 void free_word_to_vec_parameter(Word_to_vec_parameter_ptr word_to_vec_parameter) {
     free_(word_to_vec_parameter);
 }

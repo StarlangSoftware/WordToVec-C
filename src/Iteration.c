@@ -25,6 +25,9 @@ Iteration_ptr create_iteration(Corpus_ptr corpus, Word_to_vec_parameter_ptr para
     return result;
 }
 
+/**
+ * Frees memory allocated for iteration.
+ */
 void free_iteration(Iteration_ptr iteration) {
     free_(iteration);
 }

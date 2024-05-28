@@ -9,6 +9,11 @@
 #include "SemanticDataSet.h"
 #include "WordPair.h"
 
+/**
+ * Constructor for the semantic dataset. Reads word pairs and their similarity scores from an input file.
+ * @param file_name Input file that stores the word pair and similarity scores.
+ * @return Semantic dataset read from an input file
+ */
 Semantic_data_set_ptr create_semantic_data_set(char *file_name) {
     Semantic_data_set_ptr result = create_semantic_data_set2();
     Array_list_ptr lines = read_lines(file_name);
@@ -22,17 +27,32 @@ Semantic_data_set_ptr create_semantic_data_set(char *file_name) {
     return result;
 }
 
+/**
+ * Empty constructor for the semantic dataset.
+ * @return Empty semantic dataset
+ */
 Semantic_data_set_ptr create_semantic_data_set2() {
     Semantic_data_set_ptr result = malloc_(sizeof(Semantic_data_set), "create_semantic_data_set2");
     result->pairs = create_array_list();
     return result;
 }
 
+/**
+ * Frees memory allocated for a semantic dataset. Frees pairs array list.
+ * @param semantic_data_set Semantic dataset to deallocate
+ */
 void free_semantic_data_set(Semantic_data_set_ptr semantic_data_set) {
     free_array_list(semantic_data_set->pairs, (void (*)(void *)) free_word_pair);
     free_(semantic_data_set);
 }
 
+/**
+ * Calculates the similarities between words in the dataset. The word vectors will be taken from the input
+ * vectorized dictionary.
+ * @param semantic_data_set Semantic dataset
+ * @param dictionary Vectorized dictionary that stores the word vectors.
+ * @return Word pairs and their calculated similarities stored as a semantic dataset.
+ */
 Semantic_data_set_ptr
 calculate_similarities(Semantic_data_set_ptr semantic_data_set, Vectorized_dictionary_ptr dictionary) {
     Semantic_data_set_ptr result = create_semantic_data_set2();
@@ -53,10 +73,21 @@ calculate_similarities(Semantic_data_set_ptr semantic_data_set, Vectorized_dicti
     return result;
 }
 
+/**
+ * Sorts the word pairs in the dataset according to the WordPairComparator.
+ * @param semantic_data_set Semantic dataset
+ */
 void sort_semantic_data_set(Semantic_data_set_ptr semantic_data_set) {
     array_list_sort(semantic_data_set->pairs, (int (*)(const void *, const void *)) compare_word_pair2);
 }
 
+/**
+ * Finds and returns the index of a word pair in the pairs array list. If there is no such word pair, it
+ * returns -1.
+ * @param semantic_data_set Semantic dataset
+ * @param word_pair Word pair to search in the semantic dataset.
+ * @return Index of the given word pair in the pairs array list. If it does not exist, the method returns -1.
+ */
 int index_of_word_pair(Semantic_data_set_ptr semantic_data_set, Word_pair_ptr word_pair) {
     for (int i = 0; i < semantic_data_set->pairs->size; i++){
         Word_pair_ptr current = array_list_get(semantic_data_set->pairs, i);
@@ -67,6 +98,12 @@ int index_of_word_pair(Semantic_data_set_ptr semantic_data_set, Word_pair_ptr wo
     return -1;
 }
 
+/**
+ * Calculates the Spearman correlation coefficient between two given semantic datasets.
+ * @param semantic_data_set1 First semantic dataset with which Spearman correlation coefficient is calculated.
+ * @param semantic_data_set2 Second semantic dataset with which Spearman correlation coefficient is calculated.
+ * @return Spearman correlation coefficient between two given semantic datasets.
+ */
 double spearman_correlation(Semantic_data_set_ptr semantic_data_set1, Semantic_data_set_ptr semantic_data_set2) {
     double sum = 0;
     int rank1, rank2;

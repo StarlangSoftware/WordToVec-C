@@ -52,6 +52,7 @@ void free_neural_network(Neural_network_ptr neural_network) {
 /**
  * Constructs the fast exponentiation table. Instead of taking exponent at each time, the algorithm will lookup
  * the table.
+ * @param neural_network Current neural network object
  */
 void prepare_exp_table(Neural_network_ptr neural_network) {
     for (int i = 0; i < EXP_TABLE_SIZE; i++) {
@@ -63,6 +64,7 @@ void prepare_exp_table(Neural_network_ptr neural_network) {
 
 /**
  * Calculates G value in the Word2Vec algorithm.
+ * @param neural_network Current neural network object
  * @param f F value.
  * @param alpha Learning rate alpha.
  * @param label Label of the instance.
@@ -111,6 +113,7 @@ Vectorized_dictionary_ptr train(Neural_network_ptr neural_network) {
 /**
  * Calculate the update of outputs for word indexed with l2. It also calculates the word vector updates for word
  * indexed at l2.
+ * @param neural_network Current neural network object
  * @param outputUpdate Output update to be added.
  * @param outputs Current outputs.
  * @param l2 Index of the input
@@ -131,6 +134,7 @@ void update_output(Neural_network_ptr neural_network,
 
 /**
  * Calculates the dot product of two vectors represented as array of doubles.
+ * @param neural_network Current neural network object
  * @param vector1 First vector to multiply.
  * @param vector2 Second vector to multiply.
  * @return Dot product of two given vectors.
@@ -145,6 +149,7 @@ double dot_product_array(Neural_network_ptr neural_network, const double *vector
 
 /**
  * Main method for training the CBow version of Word2Vec algorithm.
+ * @param neural_network Current neural network object
  */
 void train_cbow(Neural_network_ptr neural_network) {
     int word_index, last_word_index;
@@ -237,6 +242,7 @@ void train_cbow(Neural_network_ptr neural_network) {
 
 /**
  * Main method for training the SkipGram version of Word2Vec algorithm.
+ * @param neural_network Current neural network object
  */
 void train_skip_gram(Neural_network_ptr neural_network) {
     int word_index, last_word_index;

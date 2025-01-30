@@ -13,7 +13,7 @@
  * @param name Lemma of the word
  * @param count Number of occurrences of this word in the corpus
  */
-Vocabulary_word_ptr create_vocabulary_word(char *name, int count) {
+Vocabulary_word_ptr create_vocabulary_word(const char *name, int count) {
     Vocabulary_word_ptr result = malloc_(sizeof(Vocabulary_word), "create_vocabulary_word");
     result->name = str_copy(result->name, name);
     result->count = count;

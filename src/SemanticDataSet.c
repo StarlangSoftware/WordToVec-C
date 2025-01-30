@@ -14,7 +14,7 @@
  * @param file_name Input file that stores the word pair and similarity scores.
  * @return Semantic dataset read from an input file
  */
-Semantic_data_set_ptr create_semantic_data_set(char *file_name) {
+Semantic_data_set_ptr create_semantic_data_set(const char *file_name) {
     Semantic_data_set_ptr result = create_semantic_data_set2();
     Array_list_ptr lines = read_lines(file_name);
     for (int i = 0; i < lines->size; i++){
@@ -106,7 +106,7 @@ int index_of_word_pair(Semantic_data_set_ptr semantic_data_set, Word_pair_ptr wo
  */
 double spearman_correlation(Semantic_data_set_ptr semantic_data_set1, Semantic_data_set_ptr semantic_data_set2) {
     double sum = 0;
-    int rank1, rank2;
+    int rank1, rank2 = 0;
     sort_semantic_data_set(semantic_data_set1);
     sort_semantic_data_set(semantic_data_set2);
     for (int i = 0; i < semantic_data_set1->pairs->size; i++){

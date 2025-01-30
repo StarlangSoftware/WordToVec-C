@@ -17,7 +17,7 @@ typedef struct semantic_data_set Semantic_data_set;
 
 typedef Semantic_data_set *Semantic_data_set_ptr;
 
-Semantic_data_set_ptr create_semantic_data_set(char* file_name);
+Semantic_data_set_ptr create_semantic_data_set(const char* file_name);
 
 Semantic_data_set_ptr create_semantic_data_set2();
 

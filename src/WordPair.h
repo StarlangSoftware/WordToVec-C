@@ -15,7 +15,7 @@ typedef struct word_pair Word_pair;
 
 typedef Word_pair *Word_pair_ptr;
 
-Word_pair_ptr create_word_pair(char* word1, char* word2, double related_by);
+Word_pair_ptr create_word_pair(const char* word1, const char* word2, double related_by);
 
 void free_word_pair(Word_pair_ptr word_pair);
 

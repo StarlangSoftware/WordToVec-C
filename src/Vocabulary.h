@@ -33,7 +33,7 @@ void create_uni_gram_table(Vocabulary_ptr vocabulary);
 
 void construct_huffman_tree(Vocabulary_ptr vocabulary);
 
-int get_position(Vocabulary_ptr vocabulary, char* word);
+int get_position(Vocabulary_ptr vocabulary, const char* word);
 
 int size_of_vocabulary(Vocabulary_ptr vocabulary);
 

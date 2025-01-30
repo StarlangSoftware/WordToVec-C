@@ -19,7 +19,7 @@ typedef struct vocabulary_word Vocabulary_word;
 
 typedef Vocabulary_word *Vocabulary_word_ptr;
 
-Vocabulary_word_ptr create_vocabulary_word(char* name, int count);
+Vocabulary_word_ptr create_vocabulary_word(const char* name, int count);
 
 void free_vocabulary_word(Vocabulary_word_ptr word);
 

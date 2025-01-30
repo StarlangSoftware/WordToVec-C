@@ -60,16 +60,18 @@ Vocabulary_ptr create_vocabulary2() {
 
 /**
  * Searches a word and returns the position of that word in the vocabulary. Search is done using binary search.
+ * @param vocabulary Current vocabulary object
  * @param word Word to be searched.
  * @return Position of the word searched.
  */
-int get_position(Vocabulary_ptr vocabulary, char* word) {
+int get_position(Vocabulary_ptr vocabulary, const char* word) {
     int* position = hash_map_get(vocabulary->word_map, word);
     return *position;
 }
 
 /**
  * Returns number of words in the vocabulary.
+ * @param vocabulary Current vocabulary object
  * @return Number of words in the vocabulary.
  */
 int size_of_vocabulary(Vocabulary_ptr vocabulary) {
@@ -78,6 +80,7 @@ int size_of_vocabulary(Vocabulary_ptr vocabulary) {
 
 /**
  * Returns the word at a given index.
+ * @param vocabulary Current vocabulary object
  * @param index Index of the word.
  * @return The word at a given index.
  */
@@ -87,6 +90,7 @@ Vocabulary_word_ptr vocabulary_get_word(Vocabulary_ptr vocabulary, int index) {
 
 /**
  * Accessor for the unigram table.
+ * @param vocabulary Current vocabulary object
  * @param index Index of the word.
  * @return Unigram table value at a given index.
  */
@@ -96,6 +100,7 @@ int get_table_value(Vocabulary_ptr vocabulary, int index) {
 
 /**
  * Constructs the unigram table based on the number of occurrences of the words.
+ * @param vocabulary Current vocabulary object
  */
 void create_uni_gram_table(Vocabulary_ptr vocabulary) {
     int i;
@@ -124,6 +129,7 @@ void create_uni_gram_table(Vocabulary_ptr vocabulary) {
 
 /**
  * Constructs Huffman Tree based on the number of occurrences of the words.
+ * @param vocabulary Current vocabulary object
  */
 void construct_huffman_tree(Vocabulary_ptr vocabulary) {
     int min1i, min2i, b, i, size = vocabulary->vocabulary->size;

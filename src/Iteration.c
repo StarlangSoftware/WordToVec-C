@@ -9,7 +9,7 @@
  * Constructor for the Iteration class. Get corpus and parameter as input, sets the corresponding
  * parameters.
  * @param corpus Corpus used to train word vectors using Word2Vec algorithm.
- * @param wordToVecParameter Parameters of the Word2Vec algorithm.
+ * @param parameter Parameters of the Word2Vec algorithm.
  */
 Iteration_ptr create_iteration(Corpus_ptr corpus, Word_to_vec_parameter_ptr parameter) {
     Iteration_ptr result = malloc_(sizeof(Iteration), "create_iteration");
@@ -27,6 +27,7 @@ Iteration_ptr create_iteration(Corpus_ptr corpus, Word_to_vec_parameter_ptr para
 
 /**
  * Frees memory allocated for iteration.
+ * @param iteration Current iteration object
  */
 void free_iteration(Iteration_ptr iteration) {
     free_(iteration);
@@ -34,6 +35,8 @@ void free_iteration(Iteration_ptr iteration) {
 
 /**
  * Updates the alpha parameter after 10000 words has been processed.
+ * @param iteration Current iteration object
+ * @param total_number_of_words Total number of words in the corpus
  */
 void alpha_update(Iteration_ptr iteration, int total_number_of_words) {
     if (iteration->word_count - iteration->last_word_count > 10000) {
@@ -49,7 +52,8 @@ void alpha_update(Iteration_ptr iteration, int total_number_of_words) {
  * Updates sentencePosition, sentenceIndex (if needed) and returns the current sentence processed. If one sentence
  * is finished, the position shows the beginning of the next sentence and sentenceIndex is incremented. If the
  * current sentence is the last sentence, the system shuffles the sentences and returns the first sentence.
- * @param currentSentence Current sentence processed.
+ * @param iteration Current iteration object
+ * @param current_sentence Current sentence processed.
  * @return If current sentence is not changed, currentSentence; if changed the next sentence; if next sentence is
  * the last sentence; shuffles the corpus and returns the first sentence.
  */

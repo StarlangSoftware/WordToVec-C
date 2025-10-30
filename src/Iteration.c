@@ -12,7 +12,7 @@
  * @param parameter Parameters of the Word2Vec algorithm.
  */
 Iteration_ptr create_iteration(Corpus_ptr corpus, Word_to_vec_parameter_ptr parameter) {
-    Iteration_ptr result = malloc_(sizeof(Iteration), "create_iteration");
+    Iteration_ptr result = malloc_(sizeof(Iteration));
     result->word_count = 0;
     result->last_word_count = 0;
     result->word_count_actual = 0;

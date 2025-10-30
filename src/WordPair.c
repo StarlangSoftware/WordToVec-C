@@ -14,7 +14,7 @@
  * @param related_by Similarity score between first and second word.
  */
 Word_pair_ptr create_word_pair(const char *word1, const char *word2, double related_by) {
-    Word_pair_ptr result = malloc_(sizeof(Word_pair), "create_word_pair");
+    Word_pair_ptr result = malloc_(sizeof(Word_pair));
     result->word1 = str_copy(result->word1, word1);
     result->word2 = str_copy(result->word2, word2);
     result->related_by = related_by;

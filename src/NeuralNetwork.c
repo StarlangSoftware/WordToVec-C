@@ -16,7 +16,7 @@
  * @param parameter Parameters of the Word2Vec algorithm.
  */
 Neural_network_ptr create_neural_network(Corpus_ptr corpus, Word_to_vec_parameter_ptr parameter) {
-    Neural_network_ptr result = malloc_(sizeof(Neural_network), "create_neural_network");
+    Neural_network_ptr result = malloc_(sizeof(Neural_network));
     int row;
     srandom(parameter->seed);
     result->vocabulary = create_vocabulary(corpus);
@@ -160,8 +160,8 @@ void train_cbow(Neural_network_ptr neural_network) {
     Sentence_ptr current_sentence = corpus_get_sentence2(neural_network->corpus);
     Vocabulary_word_ptr current_word;
     srandom(neural_network->parameter->seed);
-    double* outputs = malloc_(neural_network->vector_length * sizeof(double), "train_cbow_1");
-    double* output_update = malloc_(neural_network->vector_length * sizeof(double), "train_cbow_2");
+    double* outputs = malloc_(neural_network->vector_length * sizeof(double));
+    double* output_update = malloc_(neural_network->vector_length * sizeof(double));
     while (iteration->iteration_count < neural_network->parameter->number_of_iterations) {
         alpha_update(iteration, neural_network->vocabulary->total_number_of_words);
         word_index = get_position(neural_network->vocabulary, array_list_get(current_sentence->words, iteration->sentence_position));
@@ -253,7 +253,7 @@ void train_skip_gram(Neural_network_ptr neural_network) {
     Sentence_ptr current_sentence = corpus_get_sentence2(neural_network->corpus);
     Vocabulary_word_ptr current_word;
     srandom(neural_network->parameter->seed);
-    double* output_update = malloc_(neural_network->vector_length * sizeof(double), "train_skip_gram");
+    double* output_update = malloc_(neural_network->vector_length * sizeof(double));
     while (iteration->iteration_count < neural_network->parameter->number_of_iterations) {
         alpha_update(iteration, neural_network->vocabulary->total_number_of_words);
         word_index = get_position(neural_network->vocabulary, array_list_get(current_sentence->words, iteration->sentence_position));

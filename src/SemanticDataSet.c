@@ -32,7 +32,7 @@ Semantic_data_set_ptr create_semantic_data_set(const char *file_name) {
  * @return Empty semantic dataset
  */
 Semantic_data_set_ptr create_semantic_data_set2() {
-    Semantic_data_set_ptr result = malloc_(sizeof(Semantic_data_set), "create_semantic_data_set2");
+    Semantic_data_set_ptr result = malloc_(sizeof(Semantic_data_set));
     result->pairs = create_array_list();
     return result;
 }

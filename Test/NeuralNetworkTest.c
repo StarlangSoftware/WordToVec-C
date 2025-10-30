@@ -3,6 +3,8 @@
 //
 
 #include <Corpus.h>
+#include <Memory/Memory.h>
+
 #include "../src/SemanticDataSet.h"
 #include "../src/WordToVecParameter.h"
 #include "../src/NeuralNetwork.h"
@@ -131,5 +133,7 @@ void test_with_word_vectors(){
 }
 
 int main(){
+    start_large_memory_check();
     test_train_english_cbow();
+    end_memory_check();
 }

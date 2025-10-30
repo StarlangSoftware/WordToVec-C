@@ -14,7 +14,7 @@
  * @param count Number of occurrences of this word in the corpus
  */
 Vocabulary_word_ptr create_vocabulary_word(const char *name, int count) {
-    Vocabulary_word_ptr result = malloc_(sizeof(Vocabulary_word), "create_vocabulary_word");
+    Vocabulary_word_ptr result = malloc_(sizeof(Vocabulary_word));
     result->name = str_copy(result->name, name);
     result->count = count;
     result->code_length = 0;

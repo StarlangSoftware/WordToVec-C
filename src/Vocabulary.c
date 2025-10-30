@@ -37,7 +37,7 @@ Vocabulary_ptr create_vocabulary(Corpus_ptr corpus) {
     construct_huffman_tree(result);
     array_list_sort(result->vocabulary, (int (*)(const void *, const void *)) compare_vocabulary_word);
     for (int i = 0; i < result->vocabulary->size; i++){
-        int* index = malloc_(sizeof(int), "create_vocabulary");
+        int* index = malloc_(sizeof(int));
         *index = i;
         hash_map_insert(result->word_map, ((Vocabulary_word_ptr)array_list_get(result->vocabulary, i))->name, index);
     }
@@ -50,7 +50,7 @@ Vocabulary_ptr create_vocabulary(Corpus_ptr corpus) {
  * @return An empty allocated vocabulary.
  */
 Vocabulary_ptr create_vocabulary2() {
-    Vocabulary_ptr result = malloc_(sizeof(Vocabulary), "create_vocabulary2");
+    Vocabulary_ptr result = malloc_(sizeof(Vocabulary));
     result->vocabulary = create_array_list();
     result->table = create_array_list();
     result->word_map = create_string_hash_map();

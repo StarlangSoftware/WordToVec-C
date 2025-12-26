@@ -60,8 +60,8 @@ calculate_similarities(Semantic_data_set_ptr semantic_data_set, Vectorized_dicti
     for (int i = 0; i < semantic_data_set->pairs->size; i++){
         char* word1 = ((Word_pair_ptr) array_list_get(semantic_data_set->pairs, i))->word1;
         char* word2 = ((Word_pair_ptr) array_list_get(semantic_data_set->pairs, i))->word2;
-        Vectorized_word_ptr vectorized_word_1 = get_word2(dictionary, word1);
-        Vectorized_word_ptr vectorized_word_2 = get_word2(dictionary, word2);
+        Vectorized_word_ptr vectorized_word_1 = get_word((Dictionary_ptr) dictionary, word1);
+        Vectorized_word_ptr vectorized_word_2 = get_word((Dictionary_ptr) dictionary, word2);
         if (vectorized_word_1 != NULL && vectorized_word_2 != NULL){
             similarity = cosine_similarity(vectorized_word_1->vector, vectorized_word_2->vector);
             array_list_add(result->pairs, create_word_pair(word1, word2, similarity));

@@ -104,9 +104,9 @@ Vectorized_dictionary_ptr train(Neural_network_ptr neural_network) {
         for (int j = 0; j < neural_network->vector_length; j++){
             add_value_to_vector(vector, neural_network->word_vectors[i][j]);
         }
-        add_word_vectorized(result, create_vectorized_word(vocabulary_get_word(neural_network->vocabulary, i)->name, vector));
+        add_word((Dictionary_ptr) result, (Word_ptr) create_vectorized_word(vocabulary_get_word(neural_network->vocabulary, i)->name, vector));
     }
-    sort_vectorized(result);
+    sort((Dictionary_ptr) result);
     return result;
 }
 

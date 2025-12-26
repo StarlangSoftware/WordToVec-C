@@ -104,7 +104,7 @@ void test_with_word_vectors(){
     mturk = create_semantic_data_set("MTurk771.txt");
     rare = create_semantic_data_set("RareWords.txt");
     Vectorized_dictionary_ptr dictionary = create_vectorized_dictionary2("vectors-english-xs.txt");
-    printf("%d\n", dictionary->dictionary->words->size);
+    printf("%d\n", dictionary->dictionary.words->size);
     Semantic_data_set_ptr mc2 = calculate_similarities(mc, dictionary);
     printf("%.6lf\n", spearman_correlation(mc, mc2));
     free_semantic_data_set(mc);
